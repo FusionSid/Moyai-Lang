@@ -9,7 +9,7 @@ extern char *yytext;
 extern FILE *yyin;
 
 // the tokens be like :moyai:
-char *tokens[] = {NULL, "INTEGER", "STRING", "FLOAT", "IDENTIFIER", "ASIGN", "ADD", "SUBTRACT", "MULTIPLY", "DIVIDE", "INVALID"};
+char *tokens[] = {NULL, "INTEGER", "STRING", "FLOAT", "IDENTIFIER", "ASIGN", "ADD", "SUBTRACT", "MULTIPLY", "DIVIDE", "INVALID", "MODULO"};
 
 // Main method be like :moyai:
 int main(int argc, char *argv[])

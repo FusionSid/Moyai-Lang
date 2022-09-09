@@ -7,12 +7,12 @@
 #define INTEGER 1
 #define STRING 2
 #define FLOAT 3
-
 #define IDENTIFIER 4
 #define ASIGN 5
-
 #define ADD 6
 #define SUBTRACT 7
 #define MULTIPLY 8
 #define DIVIDE 9
 #define INVALID 10
+#define COMMENT 11
+#define MODULO 11
