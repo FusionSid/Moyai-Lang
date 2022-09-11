@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "lexer/lexer.h"
+#include "lexer/tokens.h"
 
 // some lex stuff
 extern int yylex();
@@ -8,8 +8,25 @@ extern int yylineno;
 extern char *yytext;
 extern FILE *yyin;
 
-// the tokens be like :moyai:
-char *tokens[] = {NULL, "INTEGER", "STRING", "FLOAT", "IDENTIFIER", "ASIGN", "ADD", "SUBTRACT", "MULTIPLY", "DIVIDE", "INVALID", "MODULO"};
+// Tokens be like :moyai: ngl
+char *token_names[] = {
+    NULL,
+    "ADD",
+    "SUBTRACT",
+    "DIVIDE",
+    "MULTIPLY",
+    "MODULO",
+    "BRACKET_OPEN",
+    "BRACKET_CLOSE",
+    "CURLY_BRACE_OPEN",
+    "CURLY_BRACE_CLOSE",
+    "SQUARE_BRACKET_OPEN",
+    "SQUARE_BRACKET_CLOSE",
+    "ASIGN",
+    "IDENTIFIER",
+    "INTEGER_LITERAL",
+    "FLOAT_LITERAL",
+    "STRING_LITERAL"};
 
 // Main method be like :moyai:
 int main(int argc, char *argv[])
@@ -44,14 +61,6 @@ int main(int argc, char *argv[])
     // Keep going till no more tokens (or error)
     while (name_token)
     {
-        // token with the value of 10 is you guessed it - INVALID. So if you get an error thats a #moyai_moment ngl
-        if (name_token == INVALID)
-        {
-            // error
-            printf("\nInvalid Character (line %i):\n    %s\nsyntax error be like :moyai:\n\n", yylineno, yytext);
-            fclose(yyin);
-            return 1;
-        }
 
         // switch the token
         switch (name_token)
@@ -74,10 +83,12 @@ int main(int argc, char *argv[])
             value_token = yylex();
 
             // No vars yet so just print
-            printf("Variable Created!\t%s has been set to %s with type of %s\n", variable_name, yytext, tokens[value_token]);
+            printf("Variable Created!\t%s has been set to %s with type of %s\n", variable_name, yytext, token_names[value_token]);
+            break;
+        default:
+            printf("%s\t%s\n", yytext, token_names[name_token]);
             break;
         }
-        printf("%s\t%s\n", yytext, tokens[name_token]);
 
         // Get next token
         name_token = yylex();

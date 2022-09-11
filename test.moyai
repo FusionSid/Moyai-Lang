@@ -1,9 +1,14 @@
+// test file for me to test the tokenizer
+
 69
 "String 1"
 'String 2'
 69.42
 test_var_with_num = 5
 test_var_with_str = "LMAO"
+()
+{}
+[]
 
 + - * / %
 
@@ -14,5 +19,5 @@ multi line
 comment lmao
 */
 
-// This will give an syntax error:
-e e
+// This will give an error:
+e

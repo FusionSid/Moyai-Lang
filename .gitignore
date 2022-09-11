@@ -1,3 +1,4 @@
 *.yy.c
 *.out
 *.txt
+*.vscode/
