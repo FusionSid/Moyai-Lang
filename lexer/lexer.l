@@ -5,7 +5,7 @@ void invalid_token();
 %}
 
 newline \n
-whitespace [ \t]
+whitespace [ \t:]
 
 %% 
 "+"                                                           {return ADD;}
@@ -19,7 +19,8 @@ whitespace [ \t]
 
 [-+]?[0-9]*                                                   {return INTEGER_LITERAL;}
 [0-9]+[\.][0-9]+                                              {return FLOAT_LITERAL;}
-(["]([^"\\\n]|\\(.|\n))*["])|([']([^'\\\n]|\\(.|\n))*['])     {return STRING_LITERAL;}
+[\'][a-zA-Z][\']                                              {return CHAR_LITERAL;}
+["]([^"\\\n]|\\(.|\n))*["]                                    {return STRING_LITERAL;}
 
 "("                                                           {return BRACKET_OPEN;}
 ")"                                                           {return BRACKET_CLOSE;}

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "lexer/tokens.h"
 
@@ -26,7 +27,9 @@ char *token_names[] = {
     "IDENTIFIER",
     "INTEGER_LITERAL",
     "FLOAT_LITERAL",
-    "STRING_LITERAL"};
+    "STRING_LITERAL",
+    "PRINT_FUNCTION",
+    "ADD_FUNCTION"};
 
 // Main method be like :moyai:
 int main(int argc, char *argv[])
@@ -61,30 +64,43 @@ int main(int argc, char *argv[])
     // Keep going till no more tokens (or error)
     while (name_token)
     {
-
+        double total = 0;
         // switch the token
         switch (name_token)
         {
-        // If the token is an IDENTIFIER which means if it is a variable name
-        case IDENTIFIER:
-            // copy variable name into the variable_name var
-            strcpy(variable_name, yytext);
+        // // If the token is an IDENTIFIER which means if it is a variable name
+        // case IDENTIFIER:
+        //     // copy variable name into the variable_name var
+        //     strcpy(variable_name, yytext);
 
-            // Get the nex token WHICH SHOULD BE AN EQUALS SIGN
-            value_token = yylex();
-            // Check if token after variable name is an = sign if not BAD
-            if (value_token != ASIGN)
-            {
-                printf("\nSyntax Error (line %i):\n    Expected asignment operator ('=') after variable name ('%s') but got '%s' instead.\nsyntax error be like :moyai:\n\n", yylineno, variable_name, yytext);
-                fclose(yyin);
-                return 1;
-            }
-            // go to the next token which will be the value and set the var to that
-            value_token = yylex();
+        //     // Get the nex token WHICH SHOULD BE AN EQUALS SIGN
+        //     value_token = yylex();
+        //     // Check if token after variable name is an = sign if not BAD
+        //     if (value_token != ASIGN)
+        //     {
+        //         printf("\nSyntax Error (line %i):\n    Expected assignment operator '=' after variable name '%s' but got '%s' instead.\nsyntax error be like :moyai:\n\n", yylineno, variable_name, yytext);
+        //         fclose(yyin);
+        //         return 1;
+        //     }
+        //     // go to the next token which will be the value and set the var to that
+        //     value_token = yylex();
 
-            // No vars yet so just print
-            printf("Variable Created!\t%s has been set to %s with type of %s\n", variable_name, yytext, token_names[value_token]);
-            break;
+        //     // No vars yet so just print
+        //     printf("Variable Created!\t%s has been set to %s with type of %s\n", variable_name, yytext, token_names[value_token]);
+        //     break;
+        // case PRINT_FUNCTION:
+        //     while (yylex() == STRING_LITERAL)
+        //     {
+        //         printf("\nPRINTING:\t%s\n\n", yytext);
+        //     }
+        //     break;
+        // case ADD_FUNCTION:
+        //     while (yylex() == INTEGER_LITERAL)
+        //     {
+        //         total += atoi(yytext);
+        //     }
+        //     printf("\nTOTAL:\t%f\n\n", total);
+        //     break;
         default:
             printf("%s\t%s\n", yytext, token_names[name_token]);
             break;
