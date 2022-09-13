@@ -1,5 +1,8 @@
 %{
-#include "lexer/tokens.h"
+#include "parser.tab.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 void invalid_token();
 %}
@@ -14,13 +17,23 @@ whitespace [ \t:]
 "*"                                                           {return MULTIPLY;}
 "%"                                                           {return MODULO;}
 "="                                                           {return ASIGN;}
+":moyai:"                                                     {return EOL;}
+"dontbegreedy"
 
-^[a-zA-Z_$][a-zA-Z_0-9]*                                      {return IDENTIFIER;}
+"belikemoyai"                                                 {return PRINT;}
 
-[-+]?[0-9]*                                                   {return INTEGER_LITERAL;}
-[0-9]+[\.][0-9]+                                              {return FLOAT_LITERAL;}
-[\'][a-zA-Z][\']                                              {return CHAR_LITERAL;}
-["]([^"\\\n]|\\(.|\n))*["]                                    {return STRING_LITERAL;}
+[a-zA-Z][_a-zA-Z0-9]*                                         {yylval.string_value = yytext; return IDENTIFIER;}
+
+[-+]?[0-9]*                                                   {yylval.integer_value = atoi(yytext); return INTEGER_LITERAL;}
+[0-9]+[\.][0-9]+                                              {yylval.float_value = atof(yytext); return FLOAT_LITERAL;}
+[\'][a-zA-Z][\']                                              {yylval.char_value = yytext[1]; return CHAR_LITERAL;}
+["]([^"\\\n]|\\(.|\n))*["]                                    {
+                                                                char* value = strdup(yytext);
+                                                                value++;
+                                                                value[strlen(value)-1] = 0;
+                                                                yylval.string_value = value;
+                                                                return STRING_LITERAL;
+                                                              }
 
 "("                                                           {return BRACKET_OPEN;}
 ")"                                                           {return BRACKET_CLOSE;}
@@ -29,7 +42,7 @@ whitespace [ \t:]
 "["                                                           {return SQUARE_BRACKET_OPEN;}
 "]"                                                           {return SQUARE_BRACKET_CLOSE;}
 
-(\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/)|(\/\/.*)        ;
+(\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/)|(\/\/.*)        yylineno++;;
 {newline}                                                     {yylineno++;}
 {whitespace}                                                  ;
 .                                                             {invalid_token();};
@@ -40,6 +53,6 @@ int yywrap(void) {
 }
 
 void invalid_token() {
-  printf("\nInvalid Character (line %i):\n    %s\ntoken parsing error be like :moyai:\n\n", yylineno, yytext);
+  fprintf(stderr, "\nInvalid Character (line %i):\n    %s\ntoken parsing error be like :moyai:\n\n", yylineno, yytext);
   exit(0);
 }

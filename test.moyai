@@ -1,23 +1,10 @@
-// test file for me to test the tokenizer
+// This is a comment lol
 
-69
-"String 1"
-69.42
-test_var_with_num = 5
-test_var_with_str = "LMAO"
-()
-{}
-[]
-
-+ - * / %
-// This is a comment will be ignored just like whitespace
-'a'
 /*
-multi line 
-comment lmao
+PEDMAS working nice
+Also can print strings
+Also auto remove trailing 0s in float
 */
 
-// This will give an error:
-//e
-
-5
+belikemoyai (5 + 5) * 2 / 2 :moyai:
+belikemoyai "People who say 'Hello World' be like :moyai:" :moyai:
