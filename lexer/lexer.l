@@ -18,7 +18,7 @@ whitespace [ \t:]
 "%"                                                           {return MODULO;}
 "="                                                           {return ASIGN;}
 ":moyai:"                                                     {return EOL;}
-"dontbegreedy"
+"dontbegreedy"                                                {return EXIT_PROGRAM;}
 
 "belikemoyai"                                                 {return PRINT;}
 

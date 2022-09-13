@@ -6,5 +6,16 @@ Also can print strings
 Also auto remove trailing 0s in float
 */
 
-belikemoyai (5 + 5) * 2 / 2 :moyai:
+// print string
 belikemoyai "People who say 'Hello World' be like :moyai:" :moyai:
+
+// char
+belikemoyai 'e' :moyai:
+
+// math printing 
+belikemoyai (5 + 5) * 2 / 2 :moyai:
+
+// this exits the program so the next print wont run
+dontbegreedy :moyai:
+
+belikemoyai "This line wont run :(" :moyai:
