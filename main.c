@@ -29,6 +29,7 @@ int main(int argc, char *argv[])
         printf("File %s not found!\n(Skill issue get good at typing)\n", argv[1]);
         return 1;
     }
+    
     yyparse();
 
     fclose(yyin);
