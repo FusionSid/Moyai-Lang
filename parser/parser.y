@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 extern void yyerror();
 extern int yylex();
@@ -23,16 +24,18 @@ extern int yylineno;
 %token PRINT 
 %token EXIT_PROGRAM
 
-%token <string_value> STRING_LITERAL
+%token <string_value> STRING_LITERAL IDENTIFIER
 %token <char_value> CHAR_LITERAL
 %token <integer_value> INTEGER_LITERAL 
 %token <float_value> FLOAT_LITERAL 
 
+%token <string_value> INTEGER_VAR FLOAT_VAR STRING_VAR CHAR_VAR
+
 %token <char_value> ASIGN EOL
-%token <string_value> IDENTIFIER
 
 %token <char_value> CURLY_BRACE_OPEN CURLY_BRACE_CLOSE SQUARE_BRACKET_OPEN SQUARE_BRACKET_CLOSE
 
+%type <string_value> VARIABLE_NAME
 %type <integer_value> INTEGER_TERM 
 %type <float_value> FLOAT_TERM EXPRESSION
 %type <string_value> LINE
@@ -55,7 +58,10 @@ LINE : ASSIGNMENT EOL {;}
      ;
 
 
-ASSIGNMENT : IDENTIFIER ASIGN EXPRESSION {printf("MAKING VAR: %s = %g\n", $1, $3);}
+ASSIGNMENT : INTEGER_VAR VARIABLE_NAME ASIGN EXPRESSION {printf("New integer: %s = %g\n", strtok($2, " "), $4);}
+           | FLOAT_VAR VARIABLE_NAME ASIGN EXPRESSION {printf("New Float: %s = %g\n", strtok($2, " "), $4);}
+           | STRING_VAR VARIABLE_NAME ASIGN STRING_LITERAL {printf("New String: %s = %s\n", strtok($2, " "), $4);}
+           | CHAR_VAR VARIABLE_NAME ASIGN CHAR_LITERAL {printf("New Char: %s = %c\n", strtok($2, " "), $4);}
 
 EXPRESSION : INTEGER_TERM {$$ = $1;}
            | FLOAT_TERM {$$ = $1;}
@@ -74,6 +80,7 @@ EXPRESSION : INTEGER_TERM {$$ = $1;}
            ;
 
 
+VARIABLE_NAME : IDENTIFIER {$$ = $1;}
 INTEGER_TERM : INTEGER_LITERAL {$$ = $1;}
 FLOAT_TERM : FLOAT_LITERAL {$$ = $1;}
 %%

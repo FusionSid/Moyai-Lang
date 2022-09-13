@@ -20,9 +20,18 @@ whitespace [ \t:]
 ":moyai:"                                                     {return EOL;}
 "dontbegreedy"                                                {return EXIT_PROGRAM;}
 
+"iwant69"                                                     {return INTEGER_VAR;}
+"sussysentence"                                               {return STRING_VAR;}
+"imaginefloat"                                                {return FLOAT_VAR;}
+"sussyletter"                                                 {return CHAR_VAR;}
+
+
 "belikemoyai"                                                 {return PRINT;}
 
-[a-zA-Z][_a-zA-Z0-9]*                                         {yylval.string_value = yytext; return IDENTIFIER;}
+[a-zA-Z_$][a-zA-Z_0-9]*                                       {
+                                                                yylval.string_value = strtok(yytext, " ");
+                                                                return IDENTIFIER;
+                                                              }
 
 [-+]?[0-9]*                                                   {yylval.integer_value = atoi(yytext); return INTEGER_LITERAL;}
 [0-9]+[\.][0-9]+                                              {yylval.float_value = atof(yytext); return FLOAT_LITERAL;}
