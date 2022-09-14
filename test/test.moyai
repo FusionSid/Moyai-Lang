@@ -19,7 +19,9 @@ belikemoyai "" :moyai:
 belikemoyai "People who say 'Hello World' be like :moyai:" :moyai:
 
 // char
-belikemoyai 'e' :moyai:
+belikemoyai 
+'e' 
+:moyai:
 
 // math printing 
 belikemoyai (5 + 5) * 2 / 2 :moyai:

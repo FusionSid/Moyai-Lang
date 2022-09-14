@@ -3,11 +3,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "table/table.h"
+
 extern void yyerror();
 extern int yylex();
 extern char* yytext;
 extern int yylineno;
-
 %}
 
 %define parse.lac full
@@ -58,7 +59,7 @@ LINE : ASSIGNMENT EOL {;}
      ;
 
 
-ASSIGNMENT : INTEGER_VAR VARIABLE_NAME ASIGN EXPRESSION {printf("New integer: %s = %g\n", strtok($2, " "), $4);}
+ASSIGNMENT : INTEGER_VAR VARIABLE_NAME ASIGN EXPRESSION {printf("New integer: %s = %g\n", strtok($2, " "), $4); }
            | FLOAT_VAR VARIABLE_NAME ASIGN EXPRESSION {printf("New Float: %s = %g\n", strtok($2, " "), $4);}
            | STRING_VAR VARIABLE_NAME ASIGN STRING_LITERAL {printf("New String: %s = %s\n", strtok($2, " "), $4);}
            | CHAR_VAR VARIABLE_NAME ASIGN CHAR_LITERAL {printf("New Char: %s = %c\n", strtok($2, " "), $4);}
