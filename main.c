@@ -32,8 +32,19 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    FILE *fptr;
+    fptr = fopen("out.c", "w");
+    fprintf(fptr, "%s", "#include <stdio.h>\n#include <stdlib.h>\nint main(void){\n");
+    fclose(fptr);
+
     // Parse
     yyparse();
+
+    fptr = fopen("out.c", "a");
+    fprintf(fptr, "%s", "\n}");
+    fclose(fptr);
+    
+    system("gcc out.c -o moyai.out; rm out.c");
 
     // CLOSE FILE
     fclose(yyin);

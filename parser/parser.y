@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "table/table.h"
+#include "transpiler/convert_to_c.h"
 
 extern void yyerror();
 extern int yylex();
@@ -46,23 +46,89 @@ extern int yylineno;
 %%
 
 LINE : ASSIGNMENT EOL {;}
-     | PRINT EXPRESSION EOL {printf("%g\n", $2);}
-     | PRINT STRING_LITERAL EOL {printf("%s\n", $2);}
-     | PRINT CHAR_LITERAL EOL {printf("%c\n", $2);}
-     | EXIT_PROGRAM EOL {exit(0);}
+     | PRINT EXPRESSION EOL {
+                                char line[100]; 
+                                sprintf(line, "printf(\"%g\\n\");\n", $2);
+                                add_line(line);
+                                printf("%g\n", $2);
+                            }
+     | PRINT STRING_LITERAL EOL {
+                                    char line[(10 + strlen($2))]; 
+                                    sprintf(line, "printf(\"%s\\n\");\n", $2);
+                                    add_line(line);
+                                    printf("%s\n", $2);
+                                }
+     | PRINT CHAR_LITERAL EOL {
+                                char line[25]; 
+                                sprintf(line, "printf(\"%c\\n\");\n", $2);
+                                add_line(line);
+                                printf("%c\n", $2);
+                            }
+     | EXIT_PROGRAM EOL {add_line("\nexit(0);");}
 
      | LINE ASSIGNMENT EOL {;}
-     | LINE PRINT EXPRESSION EOL {printf("%g\n", $3);}
-     | LINE PRINT STRING_LITERAL EOL {printf("%s\n", $3);}
-     | LINE PRINT CHAR_LITERAL EOL {printf("%c\n", $3);}
-     | LINE EXIT_PROGRAM EOL {exit(0);}
+     | LINE PRINT EXPRESSION EOL {
+                                char line[100]; 
+                                sprintf(line, "printf(\"%g\\n\");\n", $3);
+                                add_line(line);
+                                printf("%g\n", $3);
+                            }
+     | LINE PRINT STRING_LITERAL EOL {
+                                    char line[(10 + strlen($3))]; 
+                                    sprintf(line, "printf(\"%s\\n\");\n", $3);
+                                    add_line(line);
+                                    printf("%s\n", $3);
+                                }
+     | LINE PRINT CHAR_LITERAL EOL  {
+                                char line[25]; 
+                                sprintf(line, "printf(\"%c\\n\");\n", $3);
+                                add_line(line);
+                                printf("%c\n", $3);
+                            }
+     | LINE EXIT_PROGRAM EOL {add_line("\nexit(0);");}
      ;
 
 
-ASSIGNMENT : INTEGER_VAR VARIABLE_NAME ASIGN EXPRESSION {printf("New integer: %s = %g\n", strtok($2, " "), $4); }
-           | FLOAT_VAR VARIABLE_NAME ASIGN EXPRESSION {printf("New Float: %s = %g\n", strtok($2, " "), $4);}
-           | STRING_VAR VARIABLE_NAME ASIGN STRING_LITERAL {printf("New String: %s = %s\n", strtok($2, " "), $4);}
-           | CHAR_VAR VARIABLE_NAME ASIGN CHAR_LITERAL {printf("New Char: %s = %c\n", strtok($2, " "), $4);}
+ASSIGNMENT : INTEGER_VAR VARIABLE_NAME ASIGN EXPRESSION {
+                                                            char *data_type = "INTEGER";
+                                                            char *variable_name = strtok($2, " ");
+                                                            int variable_value = $4;
+
+                                                            char line[(25 + strlen(variable_name))]; 
+                                                            sprintf(line, "int %s = %i;\n", variable_name, variable_value);
+                                                            add_line(line);
+                                                            printf("%s(%s = %i)\n", data_type, variable_name, variable_value);
+                                                    }
+           | FLOAT_VAR VARIABLE_NAME ASIGN EXPRESSION {
+                                                        char *data_type = "FLOAT";
+                                                        char *variable_name = strtok($2, " ");
+                                                        double variable_value = $4;
+
+                                                        char line[(75 + strlen(variable_name))]; 
+                                                        sprintf(line, "double %s = %g;\n", variable_name, variable_value);
+                                                        add_line(line);
+                                                        printf("%s(%s = %g)\n", data_type, variable_name, variable_value);
+                                                    }
+           | STRING_VAR VARIABLE_NAME ASIGN STRING_LITERAL {
+                                                            char *data_type = "STRING";
+                                                            char *variable_name = strtok($2, " ");
+                                                            char *variable_value = $4;
+
+                                                            char line[(25 + strlen(variable_name) + strlen(variable_value))]; 
+                                                            sprintf(line, "char %s[] = \"%s\";\n", variable_name, variable_value);
+                                                            add_line(line);
+                                                            printf("%s(%s = %s)\n", data_type, variable_name, variable_value);
+                                                        }
+           | CHAR_VAR VARIABLE_NAME ASIGN CHAR_LITERAL {
+                                                        char *data_type = "CHAR";
+                                                        char *variable_name = strtok($2, " ");
+                                                        char variable_value = $4;
+
+                                                        char line[(30 + strlen(variable_name))]; 
+                                                        sprintf(line, "char %s = '%c';\n", variable_name, variable_value);
+                                                        add_line(line);
+                                                        printf("%s(%s = %c)\n", data_type, variable_name, variable_value);
+                                                    }
 
 EXPRESSION : INTEGER_TERM {$$ = $1;}
            | FLOAT_TERM {$$ = $1;}
