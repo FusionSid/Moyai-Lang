@@ -64,7 +64,11 @@ LINE : ASSIGNMENT EOL {;}
                                 add_line(line);
                                 printf("%c\n", $2);
                             }
-     | EXIT_PROGRAM EOL {add_line("\nexit(0);");}
+     | EXIT_PROGRAM INTEGER_LITERAL EOL {
+                                            char line[25]; 
+                                            sprintf(line, "\nexit(%i);\n", $2);
+                                            add_line(line);
+                                        }
 
      | LINE ASSIGNMENT EOL {;}
      | LINE PRINT EXPRESSION EOL {
@@ -85,7 +89,11 @@ LINE : ASSIGNMENT EOL {;}
                                 add_line(line);
                                 printf("%c\n", $3);
                             }
-     | LINE EXIT_PROGRAM EOL {add_line("\nexit(0);");}
+     | LINE EXIT_PROGRAM INTEGER_LITERAL EOL {
+                            char line[25]; 
+                            sprintf(line, "\nexit(%i);\n", $3);
+                            add_line(line);
+                        }
      ;
 
 

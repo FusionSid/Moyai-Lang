@@ -13,8 +13,6 @@ imaginefloat tesst = 3 / 2 :moyai:
 sussysentence lol = "5" :moyai:
 sussyletter e = 'e' :moyai:
 
-belikemoyai "" :moyai:
-
 // print string
 belikemoyai "People who say 'Hello World' be like :moyai:" :moyai:
 
@@ -27,6 +25,6 @@ belikemoyai
 belikemoyai (5 + 5) * 2 / 2 :moyai:
 
 // this exits the program so the next print wont run
-dontbegreedy :moyai:
+dontbegreedy 1 :moyai:
 
 belikemoyai "This line wont run :(" :moyai:
